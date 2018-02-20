@@ -1,0 +1,24 @@
+
+# General info used by Actuator in the /info endpoint.
+info:
+  name: bootbase app for projects
+  groupId: @project.groupId@ # Values from pom.xml.
+  artifactId: @project.artifactId@
+  version: @project.version@
+
+# Server.
+server:
+  port: 8001 # Use 0 for a free random port.
+
+# Actuator.
+# https://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/actuator-api//html/#overview
+# IMP: If this configuration is in the bootstrap file it will be ignored.
+management:
+  endpoints:
+    web:
+      base-path: /actuator # URL prefix to all endpoints. "/actuator" by default.
+      expose: '*' # Enable all endpoints. By default only health and info are enabled.
+  # It's possible to manage all endpoints one by one.
+  endpoint:
+    heapdump:
+      enabled: false # Disables /actuator/heapdump.

@@ -1,0 +1,18 @@
+
+# Spring configuration.
+spring:
+  application:
+    name: bootbase # App ID used when registering in Eureka or requesting configurations to a Config server.
+
+  # Profiles.
+  profiles:
+    active: default # Spring's default profile if none set.
+#    active: pre # You can use a profile per environment.
+#    active: local, mysql # Or a combination of several profiles.
+#    active: pre, oracle
+
+  # Cloud.
+  cloud:
+    config:
+      uri: http://localhost:8888
+
