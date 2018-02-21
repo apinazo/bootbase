@@ -1,6 +1,7 @@
 package es.apinazo.bootbase.actuator;
 
 import org.springframework.boot.actuate.endpoint.annotation.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -8,18 +9,30 @@ import org.springframework.util.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * A demo custom Actuator {@link Endpoint} with an id
- * that must be unike in the context.
+ * that must be unique in the context.
  *
  * An endpoint is a @{@link org.springframework.context.annotation.Bean} annotated with one of this:
  * <ul>
- *     <li>@{@link Endpoint}</li>: enables enpoint in JMX and HTTP.
+ *     <li>@{@link Endpoint}</li>: enables endpoint in JMX and HTTP.
  *     <li>@{@link org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint}</li>: only in HTTP.
  *     <li>@{@link org.springframework.boot.actuate.endpoint.jmx.annotation.JmxEndpoint}</li>: only in JMX.
  * </ul>
+ *
+ * Why an {@link Endpoint} instead of a {@link org.springframework.stereotype.Controller}.
+ * Because this way:
+ * <ul>
+ *     <li>Management code is separated from application business code.</li>
+ *     <li>{@link Endpoint}s perform very specific tasks while
+ *          {@link org.springframework.stereotype.Controller}s cover a
+ *          wider range of funcionality</li>
+ *     <li>{@link Endpoint}s can be managed with management.endpoint configurations.</li>
+ * </ul>
  */
 @Endpoint(id = "demo") // Declare this bean as an endpoint with the URL /<base-path>/demo.
+@ConditionalOnProperty(value = "management.endpoint.demo.enabled") // Enable bean if set to true.
 @Component
 public class DemoEndpoint {
 
@@ -59,7 +72,7 @@ public class DemoEndpoint {
      * different method names and firms.
      *
      * Parameters with @Selector must be named as arg0, arg1, etc...
-     * Custom names cannot be used and doing that will fail in
+     * Weird but custom names cannot be used and doing that will fail in
      * missing parameters error.
      *
      * @param arg0 First argument from the URL.

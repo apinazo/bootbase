@@ -1,10 +1,12 @@
 
 # General info used by Actuator in the /info endpoint.
 info:
-  name: bootbase app for projects
-  groupId: @project.groupId@ # Values from pom.xml.
-  artifactId: @project.artifactId@
-  version: @project.version@
+  build:
+    # Values from pom.xml.
+    version: @project.version@
+    artifactId: @project.artifactId@
+    name: bootbase app for projects
+    groupId: @project.groupId@
 
 # Server.
 server:
@@ -20,5 +22,5 @@ management:
       expose: '*' # Enable all endpoints. By default only health and info are enabled.
   # It's possible to manage all endpoints one by one.
   endpoint:
-    heapdump:
-      enabled: false # Disables /actuator/heapdump.
+    demo:
+      enabled: true # Enables custom endpoint /actuator/demo.
