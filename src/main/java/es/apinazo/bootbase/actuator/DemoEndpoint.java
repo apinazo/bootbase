@@ -82,6 +82,9 @@ public class DemoEndpoint {
      * in a JSON request body with the name of the method parameter
      * exactly matching a property in the JSON body.
      *
+     * All arguments are mandatory by default so if they are not they must
+     * be annotated with @Nullable.
+     *
      * @return A result message.
      */
     @WriteOperation
