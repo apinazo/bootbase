@@ -43,6 +43,14 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Adds git info from the project's repository -->
+		<!-- NOTE: It seems not to be working with Spring Boot 2.0.0.RC1. -->
+		<dependency>
+			<groupId>pl.project13.maven</groupId>
+			<artifactId>git-commit-id-plugin</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+
         <!-- Spring MVC and embedded Tomcat server. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,6 +61,7 @@
 
 	<build>
 		<plugins>
+			<!-- Allows using Maven coordinates in configurations. -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -97,6 +106,5 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
 
 </project>
