@@ -9,5 +9,5 @@ import com.googlecode.jsonrpc4j.JsonRpcParam;
  */
 public interface SampleRPCService {
 
-    String sayHelloWorld(String name);
+    String sayHelloWorld(@JsonRpcParam(value="name") String name);
 }

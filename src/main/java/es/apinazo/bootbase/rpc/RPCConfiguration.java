@@ -23,6 +23,9 @@ public class RPCConfiguration {
      * Example request:
      * curl -v -H "Content-Type: application/json" -d "{\"id\":0, \"method\":\"sayHelloWorld\", \"params\":[\"John Doe\"]}" http://localhost:8001/rpc/sample
      *
+     * Request using named params:
+     * curl -i -H "Content-Type: application/json" -d "{\"id\":0, \"method\":\"sayHelloWorld\", \"params\":{\"name\":\"John Doe\"} }" http://localhost:8001/rpc/sample
+     *
      * @param sampleRPCService The service bean, autowired.
      * @return The JSON-RPC bean.
      */
