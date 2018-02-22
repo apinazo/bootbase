@@ -1,0 +1,3 @@
+org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationStartingEventListener
+org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationEnvironmentPreparedEventListener
+org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationPreparedEventListener
