@@ -1,3 +1,4 @@
+# Configurations in this file will be loaded before any one else and before the app is started.
 
 # Spring configuration.
 spring:
