@@ -57,12 +57,26 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+		<!-- Spring WebFlux for reactive MVC. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
 		<!-- Lombok: annotations to avoid boilerplate code. -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>1.16.16</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- jsonrpc4j: for creating JSON-RPC services.
+			 https://github.com/briandilley/jsonrpc4j -->
+		<dependency>
+			<groupId>com.github.briandilley.jsonrpc4j</groupId>
+			<artifactId>jsonrpc4j</artifactId>
+			<version>1.5.3</version>
 		</dependency>
 
 	</dependencies>
