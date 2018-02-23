@@ -30,3 +30,13 @@ management:
 
     health:
       show-details: always # Values: always, never, when-authorized.
+
+# Demo configurations.
+configurations:
+  first:
+    enabled: true
+  second:
+    # If this is enabled then ConfConditionalOnSecondConf will be enabled.
+    enabled: false
+
+

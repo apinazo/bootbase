@@ -9,6 +9,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 /**
  * Sample Spring Boot app.
  *
+ * This class will start the Spring Boot Application.
+ * Also is a good candidate as the primary @Configuration.
+ *
  * @SpringBootApplication equals to @Configuration, @EnableAutoConfiguration and @ComponentScan.
  * @ComponentScan will scan all packages here and below.
  */
