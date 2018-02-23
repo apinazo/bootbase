@@ -1,0 +1,7 @@
+# Configuration applied only when 'pro' profile is active.
+#
+# Here are the environment dependant configurations.
+
+# Server.
+server:
+  port: 8001 # Use 0 for a free random port.
