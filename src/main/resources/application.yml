@@ -15,13 +15,16 @@ server:
 # Actuator.
 # https://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/actuator-api//html/#overview
 # IMP: If this configuration is in the bootstrap file it will be ignored.
+# The list of all enabled endpoints will show in the app log when it starts.
 management:
 
   endpoints:
     web:
-#      base-path: /actuator # URL prefix to all endpoints. "/actuator" by default.
+      base-path: /actuator # URL prefix to all endpoints. "/actuator" by default.
+      enabled-by-default: true # By default is true but in order to work they must be both enabled and exposed.
       exposure:
-        include: "*" # Enable all endpoints. By default only health and info are enabled.
+        include: "*" # Expose all endpoints. By default only health and info are exposed.
+#        exclude: shutdown, beans # Don't expose this endpoints.
 
   # It's possible to manage all endpoints one by one.
   endpoint:
@@ -30,7 +33,7 @@ management:
       enabled: true # Enables custom endpoint /actuator/demo.
 
     health:
-      show-details: always # Values: always, never, when-authorized.
+      show-details: always # Values: always, never, when-authorized - by Spring Security.
 
 # Demo configurations.
 configurations:
