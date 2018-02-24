@@ -19,8 +19,9 @@ management:
 
   endpoints:
     web:
-      base-path: /actuator # URL prefix to all endpoints. "/actuator" by default.
-      expose: '*' # Enable all endpoints. By default only health and info are enabled.
+#      base-path: /actuator # URL prefix to all endpoints. "/actuator" by default.
+      exposure:
+        include: "*" # Enable all endpoints. By default only health and info are enabled.
 
   # It's possible to manage all endpoints one by one.
   endpoint:
