@@ -3,7 +3,7 @@ package es.apinazo.bootbase;
 import es.apinazo.bootbase.events.ApplicationStartingEventListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 /**
@@ -15,6 +15,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
  * @SpringBootApplication equals to @Configuration, @EnableAutoConfiguration and @ComponentScan.
  * @ComponentScan will scan all packages here and below.
  */
+@EnableScheduling
 @SpringBootApplication
 public class BootbaseApplication {
 
