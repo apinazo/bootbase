@@ -79,6 +79,18 @@
 			<version>1.5.3</version>
 		</dependency>
 
+		<!-- Spring Boot Devtools
+		Disables cache configurations in development.
+		Automatic restart whenever files on classpath change.
+		Enables LiveReload for reloading static web content when changes.
+		Enables the remote client application.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 	</dependencies>
 
 	<build>
