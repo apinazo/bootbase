@@ -5,3 +5,8 @@
 # Server.
 server:
   port: 8001 # Use 0 for a free random port.
+
+# Logging configuration.
+logging:
+  level:
+    root: WARN

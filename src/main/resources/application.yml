@@ -5,12 +5,24 @@ info:
     # Values from pom.xml.
     version: @project.version@
     artifactId: @project.artifactId@
-    name: bootbase app for projects
     groupId: @project.groupId@
+    name: bootbase
+    description: ${info.build.name} is a bootstrap project for Spring Boot. # Example of placeholder in properties.
 
 # Server.
 server:
   port: 8001 # Use 0 for a free random port.
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS # Enable color logs.
+
+# Logging configuration.
+logging:
+  level:
+    es.apinazo: DEBUG # Level by package.
+    root: INFO # Global level for anything that doesn't match the level by package.
 
 # Actuator.
 # https://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/actuator-api//html/#overview
@@ -43,4 +55,24 @@ configurations:
     # If this is enabled then ConfConditionalOnSecondConf will be enabled.
     enabled: false
 
+# Example configuration for PropsConfiguration class.
+props:
+  name: A name
+  enabled: true
+  listOfThings: one, two, three
+  anotherListOfThings:
+    - one
+    - two
+    - three
+  firstInnerConf:
+    key: The key
+    value: The value
+  secondInnerConf:
+    key: The key
+    value: The value
+  innerConfArray:
+    - key: one
+      value: one
+    - key: two
+      value: two
 
