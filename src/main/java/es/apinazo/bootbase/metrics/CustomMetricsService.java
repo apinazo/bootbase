@@ -51,7 +51,7 @@ public class CustomMetricsService {
         counterTag02.increment();
         counterTag02.increment();
         counterTag02.increment();
-        log.info("page.visitors in their 30s: {}", counterTag02.count());
+        log.debug("page.visitors in their 30s: {}", counterTag02.count());
     }
 
 }
