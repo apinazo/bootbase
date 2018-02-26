@@ -11,3 +11,12 @@ logging:
   level:
     es.apinazo: DEBUG
     root: INFO
+
+spring:
+
+  jpa:
+    hibernate:
+      show-sql: true
+
+  datasource:
+    url: jdbc:mysql://pre/bootbase

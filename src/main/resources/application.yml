@@ -14,9 +14,28 @@ server:
   port: 8001 # Use 0 for a free random port.
 
 spring:
+
+  # Logs.
   output:
     ansi:
       enabled: ALWAYS # Enable color logs.
+
+  # JPA.
+  jpa:
+    hibernate:
+      show-sql: true
+      ddl-auto: create # none, update, create, create-drop.
+
+  # Datasource.
+  datasource:
+    generate-unique-name: true # To avoid tests to reuse the same DB. There will be one DB for each context.
+    url: jdbc:mysql://localhost/bootbase
+    username: bootbase
+    password: bootbase
+    driver-class.name: com.mysql.jdbc.Driver
+    hikari:
+      test-on-borrow: true # Tests a connection from the pool before using it.
+      validation-query: SELECT 1 # Query used to validate the connection.
 
 # Logging configuration.
 logging:
@@ -75,4 +94,6 @@ props:
       value: one
     - key: two
       value: two
+
+
 

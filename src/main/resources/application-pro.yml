@@ -10,3 +10,14 @@ server:
 logging:
   level:
     root: WARN
+
+spring:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:mysql://pro/bootbase
+    username: bootbase-pro
+    password: bootbase-pro
