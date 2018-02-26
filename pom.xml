@@ -86,7 +86,11 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- In memory DB, useful for tests. -->
+		<!-- H2
+		In memory DB, useful for tests.
+		If Spring Boot developer tools are in the classpath,
+		the H2 web console will be enabled at the endpoint: /h2-console
+		-->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -116,7 +120,10 @@
 
 	<build>
 		<plugins>
-			<!-- Allows using Maven coordinates in configurations. -->
+			<!-- Spring Boot Maven plugin
+			Allows using Maven coordinates in configurations.
+			Configurations for building the app JAR
+            -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
