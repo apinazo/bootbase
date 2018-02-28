@@ -3,6 +3,7 @@ package es.apinazo.bootbase;
 import es.apinazo.bootbase.events.ApplicationStartingEventListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
@@ -12,9 +13,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * This class will start the Spring Boot Application.
  * Also is a good candidate as the primary @Configuration.
  *
- * @SpringBootApplication equals to @Configuration, @EnableAutoConfiguration and @ComponentScan.
- * @ComponentScan will scan all packages here and below.
+ * @{@link SpringBootApplication} equals to @Configuration, @EnableAutoConfiguration and @ComponentScan.
+ * @{@link org.springframework.context.annotation.ComponentScan} will scan all packages here and below.
+ * @{@link EnableScheduling} enables Spring to use {@link org.springframework.scheduling.annotation.Scheduled} tasks.
+ * @{@link EnableAspectJAutoProxy} enables AOP.
  */
+@EnableAspectJAutoProxy
 @EnableScheduling
 @SpringBootApplication
 public class BootbaseApplication {
