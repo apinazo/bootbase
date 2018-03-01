@@ -40,7 +40,10 @@ spring:
 # Logging configuration.
 logging:
   level:
-    es.apinazo: DEBUG # Level by package.
+    es.apinazo: TRACE # Level by package.
+    org.springframework.aop.interceptor: TRACE
+    com.sun.proxy: TRACE # For proxies such as dynamic repositories.
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
     root: INFO # Global level for anything that doesn't match the level by package.
 
 # Actuator.
@@ -95,5 +98,14 @@ props:
     - key: two
       value: two
 
-
-
+# Custom audit configuration.
+bootbase:
+  profiling:
+    api:
+      enabled: true
+    service:
+      enabled: true
+    repository:
+      enabled: true
+    requests:
+      enabled: true
