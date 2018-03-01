@@ -1,4 +1,4 @@
-package es.apinazo.bootbase.configuration;
+package es.apinazo.bootbase.configuration.demo;
 
 import lombok.Data;
 import lombok.ToString;

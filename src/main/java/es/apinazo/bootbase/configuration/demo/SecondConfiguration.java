@@ -1,20 +1,15 @@
-package es.apinazo.bootbase.configuration;
+package es.apinazo.bootbase.configuration.demo;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Sample configuration conditional on another.
- *
- * Will be created only if {@link SecondConfiguration} is.
- */
 @Slf4j
 @Configuration
-@ConditionalOnBean(SecondConfiguration.class)
-public class ConfConditionalOnSecondConf {
+@ConditionalOnProperty("configurations.second.enabled")
+public class SecondConfiguration{
 
     /**
      * A {@link PostConstruct} annotated method will execute after
@@ -24,7 +19,7 @@ public class ConfConditionalOnSecondConf {
      */
     @PostConstruct
     public void init(){
-        log.info("Conditional on second configuration is ready.");
+        log.info("Second configuration is ready.");
     }
 
 }
