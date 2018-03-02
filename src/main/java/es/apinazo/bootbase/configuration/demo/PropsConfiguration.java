@@ -21,7 +21,7 @@ import javax.annotation.PostConstruct;
  *
  * For inject to work all fields must have a setter method.
  *
- * See application.yml to find the properties used in this example.
+ * See application.properties to find the properties used in this example.
  */
 @Data
 @Slf4j
