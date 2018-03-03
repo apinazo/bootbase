@@ -1,0 +1,4 @@
+
+# Additional config to be loaded from a custom environment post processor.
+extra:
+  some-config: foo
