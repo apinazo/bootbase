@@ -16,12 +16,13 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
  *
  * Enables logging and timing of {@link org.springframework.stereotype.Service},
  * {@link org.springframework.stereotype.Controller} and {@link org.springframework.stereotype.Repository}
- * classes depending on separate configurations.
+ * and HTTP requests classes depending on separate configurations.
  *
  * <ul>
  *     <li>Controller: bootbase.profiling.api.enabled</li>
  *     <li>Service: bootbase.profiling.service.enabled</li>
  *     <li>Repository: bootbase.profiling.repository.enabled</li>
+ *     <li>HTTP requests: bootbase.profiling.requests.enabled</li>
  * </ul>
  *
  * All configurations default to true.

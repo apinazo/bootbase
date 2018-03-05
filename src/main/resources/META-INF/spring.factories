@@ -1,3 +1,10 @@
+
+
+# Listeners that are initialized before context is ready.
 org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationStartingEventListener
 org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationEnvironmentPreparedEventListener
 org.springframework.context.ApplicationListener=es.apinazo.bootbase.events.ApplicationPreparedEventListener
+
+# Custom enviroment post processors.
+# This one loads additional configuration from a extra-config.yml file. Application start will fail if not found.
+org.springframework.boot.env.EnvironmentPostProcessor=es.apinazo.bootbase.configuration.CustomEnvironmentPostProcessor

@@ -24,7 +24,6 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-
 	<dependencies>
 
 		<dependency>
@@ -45,7 +44,7 @@
 		</dependency>
 
 		<!-- Adds git info from the project's repository -->
-		<!-- NOTE: It seems not to be working with Spring Boot 2.0.0.RC1. -->
+		<!-- NOTE: It seems not to be working with Spring Boot 2.0.0.RELEASE. -->
 		<dependency>
 			<groupId>pl.project13.maven</groupId>
 			<artifactId>git-commit-id-plugin</artifactId>
@@ -64,7 +63,8 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
-		<!-- Lombok: annotations to avoid boilerplate code. -->
+		<!-- Lombok
+		Annotations to avoid boilerplate code in POJOs. -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -72,8 +72,9 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- jsonrpc4j: for creating JSON-RPC services.
-			 https://github.com/briandilley/jsonrpc4j -->
+		<!-- jsonrpc4j
+		For creating JSON-RPC services.
+	 	https://github.com/briandilley/jsonrpc4j -->
 		<dependency>
 			<groupId>com.github.briandilley.jsonrpc4j</groupId>
 			<artifactId>jsonrpc4j</artifactId>
@@ -108,7 +109,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- MySQL driver. -->
@@ -117,13 +118,21 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+		<!-- P6SPY
+		Utility for logging DB queries including the actual params used.
+		-->
+		<dependency>
+			<groupId>p6spy</groupId>
+			<artifactId>p6spy</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
 			<!-- Spring Boot Maven plugin
-			Allows using Maven coordinates in configurations.
-			Configurations for building the app JAR
+			Configurations for building the app fat JAR.
             -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
