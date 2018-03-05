@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class PersonService {
@@ -20,6 +22,14 @@ public class PersonService {
 
     public void doSomeMagic(){
         log.info("Doing magic !!!");
+    }
+
+    public Person getById(int id) {
+        return personRepository.findById(id).orElse(null);
+    }
+
+    public List<Person> getAll() {
+        return personRepository.findAll();
     }
 
 }
