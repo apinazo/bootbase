@@ -1,9 +1,7 @@
 package es.apinazo.bootbase.business.persons;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.springframework.context.annotation.Import;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +23,7 @@ public class Person {
     @Enumerated
     private Gender gender;
 
+    @JsonManagedReference // To avoid exceptions if no transaction is present.
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
     private List<Pet> pets = new ArrayList<>();
 
