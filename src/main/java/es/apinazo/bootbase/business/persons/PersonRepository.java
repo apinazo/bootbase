@@ -1,5 +1,6 @@
 package es.apinazo.bootbase.business.persons;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -12,6 +13,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  * and {@link org.springframework.data.domain.ExampleMatcher}.
  */
 public interface PersonRepository extends
-    CrudRepository<Person, Integer>,
+    JpaRepository<Person, Integer>,
     QueryByExampleExecutor<Person> {
 }
