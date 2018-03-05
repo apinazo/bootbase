@@ -15,8 +15,9 @@ public class Person {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Integer id; // Long should be used if a big deal of IDs are to be expected.
 
+    @Basic(optional = false) // Not nullable, but @Basic checks it before accessing the DB.
     private String firstName;
 
     private String lastName;
