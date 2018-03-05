@@ -41,8 +41,8 @@ public class ProfilingConfiguration {
     // All methods from beans whose name ends by "Controller".
     private static final String API_POINTCUT = "bean(*Controller)";
 
-    // All public methods of classes with a name ended by "Service", inside the es.bootbase package.
-    private static final String SERVICE_POINTCUT = "execution(public * es.bootbase..*Service.*(..))";
+    // All public methods of classes with a name ended by "Service", inside es.bootbase or any of its subpackages.
+    private static final String SERVICE_POINTCUT = "execution(public * es.apinazo.bootbase..*.*Service.*(..))";
 
     // All public methods of classes implementing the Repository interface.
     private static final String REPO_POINTCUT = "execution(public * org.springframework.data.repository.Repository+.*(..))";

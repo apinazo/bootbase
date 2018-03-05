@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@DataJpaTest // Creates an in-memory DB, disable @Component beans and rollback when finished.
+@DataJpaTest // Create an in-memory DB, disable @Component beans and rollback when finished.
 public class PersonRepositoryTest {
 
     @Autowired
