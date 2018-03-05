@@ -50,7 +50,7 @@ public class PersonRepositoryTest {
 
 
     @Test
-    public void findPersonByExampleWhenReturnedShouldBeMe() {
+    public void findPersonByExample_WhenReturned_ShouldBeMe() {
 
         Person examplePerson = new Person();
         examplePerson.setLastName("pinazo");
@@ -62,7 +62,7 @@ public class PersonRepositoryTest {
 
 
     @Test
-    public void findPersonByExampleMatcherWhenReturnedShouldBeMe() {
+    public void findPersonByExampleMatcher_WhenReturned_ShouldBeMe() {
 
         Person examplePerson = new Person();
         examplePerson.setLastName("Pinazo");
@@ -77,7 +77,7 @@ public class PersonRepositoryTest {
 
 
     @Test
-    public void findPersonByExampleMatcherIgnoringPropertiesWhenReturnedShouldBeMe() {
+    public void findPersonByExampleMatcherIgnoringProperties_WhenReturned_ShouldBeMe() {
 
         Person examplePerson = new Person();
         examplePerson.setLastName("Pinazo");
@@ -101,9 +101,9 @@ public class PersonRepositoryTest {
             "Person must not be null",
             optionalPerson.isPresent());
 
-        assertThat("pinazo")
-            .as("Check the person is me")
-            .isEqualTo(optionalPerson.get().getLastName());
+        assertThat(optionalPerson.get().getLastName())
+            .as("The person's name that should be mine")
+            .isEqualTo("pinazo");
    }
 
 }
