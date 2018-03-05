@@ -25,7 +25,7 @@ spring:
     hibernate:
       show-sql: false # Hide Hibernate logs but if log level is DEBUG this will be ignored.
       format-sql: true # Beautify ugly Hibernate queries.
-      ddl-auto: create # none, update, create, create-drop.
+      ddl-auto: update # none, update, create, create-drop.
 
   # Datasource.
   datasource:
