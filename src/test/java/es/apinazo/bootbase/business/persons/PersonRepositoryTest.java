@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @Slf4j
@@ -93,6 +94,15 @@ public class PersonRepositoryTest {
     }
 
 
+    @Test
+    public void findPersonByFirstName_WhenReturned_ShouldBeMe() {
+
+        Person person = this.personRepository.findByFirstName("angel");
+
+        checkThePersonIsMe(person);
+    }
+
+
     private void checkThePersonIsMe(Example example) {
 
         Optional<Person> optionalPerson = personRepository.findOne(example);
@@ -101,8 +111,18 @@ public class PersonRepositoryTest {
             "Person must not be null",
             optionalPerson.isPresent());
 
-        assertThat(optionalPerson.get().getLastName())
-            .as("The person's name that should be mine")
+        checkThePersonIsMe(optionalPerson.get());
+    }
+
+
+    private void checkThePersonIsMe(Person person) {
+
+        assertNotNull(
+            "Person must not be null",
+            person);
+
+        assertThat(person.getLastName())
+            .as("The person's last name that should be mine")
             .isEqualTo("pinazo");
    }
 
