@@ -28,6 +28,10 @@ public class PersonService {
         return personRepository.findById(id).orElse(null);
     }
 
+    public Person findByFirstName(String name) {
+        return personRepository.findByFirstName(name);
+    }
+
     public List<Person> getAll() {
         return personRepository.findAll();
     }

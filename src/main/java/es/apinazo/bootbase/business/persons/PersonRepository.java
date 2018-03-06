@@ -15,4 +15,8 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 public interface PersonRepository extends
     JpaRepository<Person, Integer>,
     QueryByExampleExecutor<Person> {
+
+
+    Person findByFirstName(String name);
+
 }
