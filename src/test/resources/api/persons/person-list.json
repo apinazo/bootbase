@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Person list",
+  "type": "array",
+  "items": {
+    "title": "Person",
+    "type": "object",
+    "properties": {
+      "id": {
+        "description": "The unique identifier for a person",
+        "type": "number"
+      },
+      "firstName": {
+        "type": "string"
+      },
+      "lastName": {
+        "type": "string"
+      },
+      "gender": {
+        "type": "string"
+      },
+      "pets": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "age": {
+              "type": "number"
+            },
+            "gender": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["id", "firstName", "lastName"]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for a person",
+      "type": "number"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
+    }
+  },
+  "required": ["id", "firstName", "lastName"]
+}
