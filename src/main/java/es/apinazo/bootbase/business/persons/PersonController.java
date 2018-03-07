@@ -9,8 +9,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController // Save us from using @ResponseBody on each endpoint.
-@RequestMapping("/persons") // URL root of all endpoints managed by this controller.
+
+/**
+ * Persons API.
+ *
+ * {@link RestController} offers several advantages:
+ * <ul>
+ *     <li>Save us from using @ResponseBody on each endpoint.</li>
+ *     <li>It's transactional by default and this avoids the need of building DTO objects to avoid lazy loading problems.</li>
+ * </ul>
+ * To better use the object to JSON auto conversion and to avoid infinite recursion it will be needed
+ * to add @JsonIgnore in the "many" side of relationships. @see {@link Pet} example.
+ * If you don't want the controller to be transactional you can disable this behaviour with the configuration:
+ * spring.jpa.open-in-view=false
+ */
+@RestController
+@RequestMapping("/persons") // Root prefix of the URI of all endpoints managed by this controller.
 public class PersonController {
 
     private PersonService personService;
