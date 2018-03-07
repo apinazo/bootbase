@@ -16,7 +16,7 @@ import java.util.List;
 public class Person {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // A linear sequence for each entity.
     private Integer id; // Long should be used if a big deal of IDs are to be expected.
 
     @Basic(optional = false) // Not nullable, but @Basic checks it before accessing the DB.
