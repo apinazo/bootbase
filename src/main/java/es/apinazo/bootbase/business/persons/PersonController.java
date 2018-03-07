@@ -1,6 +1,6 @@
 package es.apinazo.bootbase.business.persons;
 
-import io.micrometer.core.annotation.Timed;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +23,9 @@ import java.util.List;
  * If you don't want the controller to be transactional you can disable this behaviour with the configuration:
  * spring.jpa.open-in-view=false
  */
+@NoArgsConstructor
 @RestController
-@RequestMapping("/persons") // Root prefix of the URI of all endpoints managed by this controller.
+@RequestMapping(value="/persons") // Root prefix of the URI of all endpoints managed by this controller.
 public class PersonController {
 
     private PersonService personService;
@@ -39,7 +40,7 @@ public class PersonController {
         return this.personService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value="/{id}")
     public Person getPersonById(@PathVariable("id") int id) {
         return this.personService.getById(id);
     }

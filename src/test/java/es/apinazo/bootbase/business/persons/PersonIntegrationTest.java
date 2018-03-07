@@ -3,13 +3,15 @@ package es.apinazo.bootbase.business.persons;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertNotNull;
 
 
 /**
  * Person integration tests.
  *
- * Will start a full Spring Boot web app and will test end to end
- * all {@link PersonController} endpoints using {@link TestRestTemplate}
- * and using no mocks but the real beans.
+ * Will start a full Spring Boot web app and will test {@link PersonController}
+ * services end to end, using no mocks but the real beans.
+ *
+ * Some tests will be using {@link TestRestTemplate}, some other will use {@link RestAssured}.
+ *
  * The test data will be loaded from {@link PersonTestDataLoader}.
  *
  * NOTE: This test is not transactional and thereupon there will be no DB rollback !!!
@@ -36,6 +42,9 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PersonIntegrationTest {
 
+    // The random generated port.
+    @LocalServerPort
+    int serverPort;
 
     // TestRestTemplate is configured to use the prefix
     // http://localhost:${local.server.port} in all requests
@@ -68,26 +77,50 @@ public class PersonIntegrationTest {
     @Test
     public void findAllPeople_WhenReturned_ShouldBeAll() throws Exception {
 
-        // 1
-        // Using the raw JSON response and JSON-PATH.
-        // https://github.com/json-path/JsonPath
+        findAll_WithJsonPath();
+
+        findAll_ParsingRawJson();
+
+        findAll_WithObjects();
+    }
+
+
+    // Using the raw JSON response and JSON-PATH.
+    // https://github.com/json-path/JsonPath
+    private void findAll_WithJsonPath() {
+
+        // Get the response as a raw JSON.
         ResponseEntity<String> response =
             testRestTemplate
                 .getForEntity("/persons", String.class, 1);
 
         Integer length = JsonPath.read(response.getBody(), "$.length()");
 
-        assertThat( length ).as("There can be only one!").isEqualTo(1);
+        assertThat(length).as("There can be only one!").isEqualTo(1);
+    }
 
-        // 2
-        // Parsing the raw JSON
+
+    // Parsing the raw JSON into domain objects directly from the response.
+    private void findAll_ParsingRawJson() throws Exception {
+
+        // Get the response as a raw JSON.
+        ResponseEntity<String> response =
+                testRestTemplate
+                        .getForEntity("/persons", String.class, 1);
+
+        // Parse the raw JSON into objects.
+        // Using TypeReference is needed for collections.
         ObjectMapper mapper = new ObjectMapper();
-        List<Person> people2 = mapper.readValue(response.getBody(), new TypeReference<List<Person>>(){});
+        List<Person> people =
+            mapper.readValue(response.getBody(), new TypeReference<List<Person>>(){});
 
-        assertThat(people2.size()).as("There can be only one!").isEqualTo(1);
+        assertThat(people.size()).as("There can be only one!").isEqualTo(1);
+    }
 
-        // 3
-        // Getting the response directly into objects.
+
+    // Getting the response directly into objects.
+    private void findAll_WithObjects() {
+
         ResponseEntity<List<Person>> response2 =
             testRestTemplate
                 .exchange(
@@ -122,6 +155,22 @@ public class PersonIntegrationTest {
                 .getForEntity("/persons/firstName/{firstName}", Person.class, "angel");
 
         checkThePersonIsMe(response);
+    }
+
+
+    // Example of using RestAssured instead of TestRestTemplate.
+    @Test
+    public void findPersonByName_WithRestAssured() {
+
+        RestAssured.defaultParser = Parser.JSON; // To parse the response body.
+        RestAssured.port = serverPort; // Because we're using a random port.
+
+        given().
+            pathParam("firstName", "angel").
+        when().
+            get("/persons/firstName/{firstName}").
+        then().
+            body("firstName", equalTo("angel"));
     }
 
 
