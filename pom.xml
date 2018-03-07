@@ -147,6 +147,21 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- RestAssured JSON schema validator
+		Used to check if a given REST service respects its contract with a JSON schema definition.
+		-->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>3.0.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.fge</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>2.2.6</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -18,8 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//
-
 /**
  * {@link PersonController} tests.
  *
@@ -54,7 +52,7 @@ public class PersonControllerTest {
     @Test
     public void findPersonByName_WhenReturned_ShouldBeMe() throws Exception{
 
-        this.mvc
+        mvc
             .perform(get("/persons/{id}", 1)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
