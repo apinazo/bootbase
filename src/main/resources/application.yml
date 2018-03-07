@@ -70,6 +70,18 @@ management:
     health:
       show-details: always # Values: always, never, when-authorized - by Spring Security.
 
+  metrics:
+    web:
+      server:
+        # Enable global measurement of all in the app requests. Alternatively this could be set to false
+        # and then each individual @Controller to measure can be annotated with @Timed.
+        # Statistics will be available at the URI:
+        #     /actuator/metrics/http.server.requests?tag=uri:<URL encoded endpoint URI>
+        # Example for /persons/{id}:
+        #     http://localhost:8001/actuator/metrics/http.server.requests?tag=uri:%2Fpersons%2F%7Bid%7D
+        auto-time-requests: true
+
+
 # Demo configurations.
 configurations:
   first:
