@@ -47,10 +47,10 @@ public class PersonApiContractTest {
         RestAssuredMockMvc.
             given().
             when().
-                get("/persons").
+                get("/people").
             then().
                 statusCode(200).
-                body(matchesJsonSchemaInClasspath("api/persons/person-list.json"));
+                body(matchesJsonSchemaInClasspath("api/people/person-list.json"));
     }
 
     @Test
@@ -59,10 +59,10 @@ public class PersonApiContractTest {
         RestAssuredMockMvc.
             given().
             when().
-                get("/persons/{id}", 1).
+                get("/people/{id}", 1).
             then().
                 statusCode(200).
-                body(matchesJsonSchemaInClasspath("api/persons/person-detail.json"));
+                body(matchesJsonSchemaInClasspath("api/people/person-detail.json"));
     }
 
 }

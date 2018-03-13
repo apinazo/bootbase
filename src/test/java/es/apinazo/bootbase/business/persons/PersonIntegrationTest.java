@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -16,6 +18,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -40,6 +43,9 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// As this test will modify the DB in a no transactional way and so
+// it can't roll back, use an exclusive DB for it.
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class PersonIntegrationTest {
 
     // The random generated port.
@@ -92,7 +98,7 @@ public class PersonIntegrationTest {
         // Get the response as a raw JSON.
         ResponseEntity<String> response =
             testRestTemplate
-                .getForEntity("/persons", String.class, 1);
+                .getForEntity("/people", String.class, 1);
 
         Integer length = JsonPath.read(response.getBody(), "$.length()");
 
@@ -106,7 +112,7 @@ public class PersonIntegrationTest {
         // Get the response as a raw JSON.
         ResponseEntity<String> response =
                 testRestTemplate
-                        .getForEntity("/persons", String.class, 1);
+                        .getForEntity("/people", String.class, 1);
 
         // Parse the raw JSON into objects.
         // Using TypeReference is needed for collections.
@@ -124,7 +130,7 @@ public class PersonIntegrationTest {
         ResponseEntity<List<Person>> response2 =
             testRestTemplate
                 .exchange(
-                    "/persons",
+                    "/people",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<Person>>(){}
@@ -141,7 +147,7 @@ public class PersonIntegrationTest {
 
         ResponseEntity<Person> responseById =
             testRestTemplate
-                .getForEntity("/persons/{id}", Person.class, 1);
+                .getForEntity("/people/{id}", Person.class, 1);
 
         checkThePersonIsMe(responseById);
     }
@@ -152,7 +158,7 @@ public class PersonIntegrationTest {
 
         ResponseEntity<Person> response =
             testRestTemplate
-                .getForEntity("/persons/firstName/{firstName}", Person.class, "angel");
+                .getForEntity("/people/firstName/{firstName}", Person.class, "angel");
 
         checkThePersonIsMe(response);
     }
@@ -168,7 +174,7 @@ public class PersonIntegrationTest {
         given().
             pathParam("firstName", "angel").
         when().
-            get("/persons/firstName/{firstName}").
+            get("/people/firstName/{firstName}").
         then().
             body("firstName", equalTo("angel"));
     }

@@ -80,7 +80,7 @@ management:
         # and then each individual @Controller to measure can be annotated with @Timed.
         # Statistics will be available at the URI:
         #     /actuator/metrics/http.server.requests?tag=uri:<URL encoded endpoint URI>
-        # Example for /persons/{id}:
+        # Example for /people/{id}:
         #     http://localhost:8001/actuator/metrics/http.server.requests?tag=uri:%2Fpersons%2F%7Bid%7D
         auto-time-requests: true
 

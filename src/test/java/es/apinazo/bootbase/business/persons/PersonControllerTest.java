@@ -53,7 +53,7 @@ public class PersonControllerTest {
     public void findPersonByName_WhenReturned_ShouldBeMe() throws Exception{
 
         mvc
-            .perform(get("/persons/{id}", 1)
+            .perform(get("/people/{id}", 1)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.firstName", is("angel")));
@@ -70,7 +70,7 @@ public class PersonControllerTest {
         RestAssuredMockMvc.
             given().
             when().
-                get("/persons/{id}", 1).
+                get("/people/{id}", 1).
             then().
                 statusCode(200).
                 body("firstName", equalTo("angel"));

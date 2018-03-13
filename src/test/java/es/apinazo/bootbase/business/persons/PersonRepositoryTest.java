@@ -86,7 +86,7 @@ public class PersonRepositoryTest {
 
         ExampleMatcher matcher = ExampleMatcher.matching()
             .withIgnoreCase()
-            .withIgnorePaths("firstName");
+            .withIgnorePaths("firstName"); // Ignore firstName from examplePerson.
 
         Example example = Example.of(examplePerson, matcher);
 
