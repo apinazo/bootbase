@@ -8,6 +8,12 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
+
+/**
+ * Demo of a configuration that would wail and abort the application launching.
+ *
+ * This will fail when property <code>configurations.fail</code> is <code>true</code>.
+ */
 @Data
 @Slf4j
 @Configuration
