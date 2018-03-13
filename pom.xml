@@ -162,6 +162,12 @@
 			<version>2.2.6</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.github.fge</groupId>
+			<artifactId>json-schema-core</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
