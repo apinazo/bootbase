@@ -12,6 +12,9 @@ info:
 # Server.
 server:
   port: 8001 # Use 0 for a free random port.
+  compression:
+    enabled: true # Enable compression for html, xml, css and plain text.
+    min-response-size: 1024 # For files greater or equal to 1024 bytes.
 
 spring:
 
