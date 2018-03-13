@@ -2,9 +2,10 @@ package es.apinazo.bootbase.business.persons;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class PersonService {
 
     public List<Person> getAll() {
         return personRepository.findAll();
+    }
+
+    public Page<Person> getAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
     }
 
 }
