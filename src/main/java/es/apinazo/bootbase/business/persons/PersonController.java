@@ -4,10 +4,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +36,7 @@ public class PersonController {
         this.personService = personService;
     }
 
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<Person> getAll() {
         return this.personService.getAll();
@@ -51,6 +51,13 @@ public class PersonController {
     public Person getPersonByFirstName(@PathVariable("firstName") String firstName) {
 
         return this.personService.findByFirstName(firstName);
+    }
+
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping
+    public Person createPerson(@RequestBody Person person) {
+
+        return new Person();
     }
 
 }

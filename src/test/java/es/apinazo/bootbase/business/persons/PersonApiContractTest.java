@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.mockito.BDDMockito.given;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 /**
  * Validation of the {@link Person} API contract using {@link io.restassured.RestAssured}.
  *
@@ -46,6 +48,8 @@ public class PersonApiContractTest {
 
         RestAssuredMockMvc.
             given().
+                auth().
+                    with(user("user").password("password").roles("USER")).
             when().
                 get("/people").
             then().

@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,6 +75,38 @@ public class PersonControllerTest {
             then().
                 statusCode(200).
                 body("firstName", equalTo("angel"));
+    }
+
+
+    @Test
+    public void createPerson_WhenReturned_ShouldBeMe_WithRestAssured() {
+
+        // Setup RestAssuredMockMvc to use the configured MockMvc,
+        // all MockBeans and also the base URL for services.
+        RestAssuredMockMvc.mockMvc(mvc);
+
+        RestAssuredMockMvc.
+            given().
+                auth().
+                    with(user("user").password("password").roles("USER")).
+                contentType("application/json").
+                body(new Person()). // Auto converted into JSON.
+            when().
+                put("/people").
+            then().
+                statusCode(200).
+                body("firstName", equalTo("angel"));
+//
+//        RestAssuredMockMvc.
+//            given().
+//                auth().
+//                    with(user("user").password("password").roles("NOT_ADMIN")).
+//                contentType("application/json").
+//                body(new Person()).
+//            when().
+//                put("/people").
+//            then().
+//                statusCode(403);
     }
 
 }

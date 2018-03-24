@@ -21,7 +21,9 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 @RunWith(SpringRunner.class)
 @DataJpaTest // Creates an in-memory DB, disable @Component beans and rollback when finished.
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) // Use the configured Datasource.
+// Don't replace the configured datasource - defined in application.properties.
+// I want that because it's configured to use p6spy, useful to tests repositories.
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PersonRepositoryTest {
 
     @Autowired
@@ -68,8 +70,7 @@ public class PersonRepositoryTest {
         Person examplePerson = new Person();
         examplePerson.setLastName("Pinazo");
 
-        ExampleMatcher matcher = ExampleMatcher.matching()
-            .withIgnoreCase();
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase();
 
         Example example = Example.of(examplePerson, matcher);
 
