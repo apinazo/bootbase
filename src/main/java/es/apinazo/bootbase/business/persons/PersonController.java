@@ -2,9 +2,6 @@ package es.apinazo.bootbase.business.persons;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,33 +28,41 @@ public class PersonController {
 
     private PersonService personService;
 
-    @Autowired // Inject dependencies in the constructor.
-    public PersonController(PersonService personService) {
+    private PersonRepository personRepository;
+
+    @Autowired // Inject dependencies in the constructor to ease tests.
+    public PersonController(
+        PersonService personService,
+        PersonRepository personRepository) {
+
         this.personService = personService;
+        this.personRepository = personRepository;
     }
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
     @GetMapping
     public List<Person> getAll() {
         return this.personService.getAll();
     }
 
+    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
     @GetMapping(value="/{id}")
     public Person getPersonById(@PathVariable("id") int id) {
         return this.personService.getById(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
     @GetMapping("/firstName/{firstName}")
     public Person getPersonByFirstName(@PathVariable("firstName") String firstName) {
 
         return this.personService.findByFirstName(firstName);
     }
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
     public Person createPerson(@RequestBody Person person) {
 
-        return new Person();
+        return this.personRepository.save(person);
     }
 
 }
