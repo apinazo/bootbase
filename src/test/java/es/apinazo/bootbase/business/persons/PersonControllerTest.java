@@ -2,20 +2,23 @@ package es.apinazo.bootbase.business.persons;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,36 +43,45 @@ public class PersonControllerTest {
     @MockBean
     private PersonService personService;
 
+    @MockBean
+    private PersonRepository personRepository;
 
-    @Before
+    @Before // Before each test.
     public void setup() {
-
-        // Mock the personService dependency from the personController.
-        given(personService.getById(1))
-            .willReturn(new Person(1, "angel", "pinazo", Gender.MALE, null));
-    }
-
-
-    @Test
-    public void findPersonByName_WhenReturned_ShouldBeMe() throws Exception{
-
-        mvc
-            .perform(get("/people/{id}", 1)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.firstName", is("angel")));
-    }
-
-
-    @Test
-    public void findPersonByName_WhenReturned_ShouldBeMe_WithRestAssured() {
 
         // Setup RestAssuredMockMvc to use the configured MockMvc,
         // all MockBeans and also the base URL for services.
         RestAssuredMockMvc.mockMvc(mvc);
 
+        // Mock the personService dependency from the personController.
+        given(personService.getById(1))
+            .willReturn(new Person(1, "angel", "pinazo", Gender.MALE, null));
+
+        // Mock the personRepository dependency from the personController.
+        given(personRepository.save(ArgumentMatchers.any(Person.class)))
+            .willReturn(new Person(1, "angel", "pinazo", Gender.MALE, null));
+    }
+
+    @Test
+    public void findPersonById_WhenReturned_ShouldBeMe() throws Exception{
+
+        mvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/people/{id}", 1)
+                    .with(user("user").password("password").roles("USER"))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.firstName", is("angel")));
+    }
+
+    @Test
+    public void findPersonById_WhenReturned_ShouldBeMe_WithRestAssured() {
+
         RestAssuredMockMvc.
             given().
+                auth().
+                    with(user("user").password("password").roles("ADMIN")).
             when().
                 get("/people/{id}", 1).
             then().
@@ -77,36 +89,23 @@ public class PersonControllerTest {
                 body("firstName", equalTo("angel"));
     }
 
-
     @Test
     public void createPerson_WhenReturned_ShouldBeMe_WithRestAssured() {
 
-        // Setup RestAssuredMockMvc to use the configured MockMvc,
-        // all MockBeans and also the base URL for services.
-        RestAssuredMockMvc.mockMvc(mvc);
-
-        RestAssuredMockMvc.
-            given().
-                auth().
-                    with(user("user").password("password").roles("USER")).
-                contentType("application/json").
-                body(new Person()). // Auto converted into JSON.
-            when().
-                put("/people").
-            then().
-                statusCode(200).
-                body("firstName", equalTo("angel"));
-//
-//        RestAssuredMockMvc.
-//            given().
-//                auth().
-//                    with(user("user").password("password").roles("NOT_ADMIN")).
-//                contentType("application/json").
-//                body(new Person()).
-//            when().
-//                put("/people").
-//            then().
-//                statusCode(403);
+        RestAssuredMockMvc
+            .given()
+                .auth()
+                    .with(
+                        user("user").password("password").roles("ADMIN"),
+                        csrf() // Anything but GET requires MockMvc to be aware of CSRF.
+                    )
+                .contentType("application/json")
+                .body(new Person("angel", "pinazo", Gender.MALE)) // Auto converted into JSON.
+            .when()
+                .put("/people")
+            .then()
+                .statusCode(200)
+                .body("firstName", equalTo("angel"));
     }
 
 }
