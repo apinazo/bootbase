@@ -15,6 +15,12 @@ import java.util.List;
 @Entity
 public class Person {
 
+    public Person(String firstName, String lastName, Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // A linear sequence for each entity.
     private Integer id; // Long should be used if a big deal of IDs are to be expected.
