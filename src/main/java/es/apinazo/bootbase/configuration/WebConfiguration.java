@@ -19,10 +19,10 @@ public class WebConfiguration {
                 registry.addRedirectViewController("/info", "/actuator/info");
             }
 
-            // Enable CORS in all endpoints.
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**");
+                // Enable CORS in all endpoints and allow any method and origin.
+                registry.addMapping("/**").allowedMethods("*");
             }
         };
     }
