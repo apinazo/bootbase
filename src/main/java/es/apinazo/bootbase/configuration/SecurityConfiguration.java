@@ -2,7 +2,6 @@ package es.apinazo.bootbase.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 // Security by URI.
 @EnableWebSecurity
-// By roles and authorities with @Secured, @PreAuthorize and @PostAuthorized annotations enabled.
+// Security by roles and authorities with @Secured, @PreAuthorize and @PostAuthorized annotations enabled.
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -55,10 +54,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
 
-        // Anonymous class implementing the AuthenticationEntryPoint.commence() method is replaced by a lambda expression.
+        // Anonymous class implementing the AuthenticationEntryPoint.commence() method
+        // is replaced by a lambda expression.
         return
-            (HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-            -> response.sendError( HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized" );
+            (HttpServletRequest request,
+             HttpServletResponse response,
+             AuthenticationException exception)
+                -> response.sendError( HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized" );
     }
 
 
@@ -66,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Define what to do once the user has successfully logged in.
      *
      * In example, retrieve all its data from a custom domain entity,
-     * write some logs...
+     * write some logs, register last login, etc...
      *
      * @return The handler.
      */
@@ -74,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return
             (HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication) -> {
+             HttpServletResponse response,
+             Authentication authentication) -> {
 
                 // Do something with the user, log the login, etc...
             };
@@ -92,17 +94,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * and an 'admin' users created by default.
      *
      * @param auth An {@link AuthenticationManagerBuilder}.
-     * @throws Exception
+     * @throws Exception on error
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
 
         // TODO: Replace by auth.authenticationProvider( <? extends DaoAuthenticationProvider> ).
-        auth.inMemoryAuthentication() // Creates an in-memory AuthenticationProvider.
-            .withUser("admin").password("password").roles("ADMIN")
+        auth
+            .inMemoryAuthentication() // Creates an in-memory AuthenticationProvider.
+                .withUser("admin").password("password").roles("ADMIN")
             .and()
-            .withUser("user").password("password").roles("USER");
+                .withUser("user").password("password").roles("USER");
     }
 
 
@@ -110,30 +113,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Configures security by URI.
      *
      * Defines the entry point, the {@link org.springframework.security.web.authentication.AuthenticationSuccessHandler},
-     * which URIs are to be secured - by pattern - and which none.
+     * which URIs are to be secured - by pattern - and which will not.
      *
      * This will not secure class methods but will work in combination with that
      * and the most restrictive rule will be applied.
      *
-     * @param http
-     * @throws Exception
+     * @param http {@link HttpSecurity}
+     * @throws Exception on error
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .csrf().disable()
+            .csrf()
+                .disable()
             .exceptionHandling()
             .authenticationEntryPoint(authenticationEntryPoint)
             .and()
-            .authorizeRequests()
-            .antMatchers("/**").authenticated()
+                .authorizeRequests()
+                    .antMatchers("/actuator/**").permitAll() // Actuator is not secured.
+//                    .antMatchers("/**").authenticated() // Any other URI requires an authenticated user.
+                    .antMatchers("/**").permitAll()
             .and()
-            .formLogin()
-            .successHandler(authenticationSuccessHandler)
-            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+                .formLogin()
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(new SimpleUrlAuthenticationFailureHandler())
             .and()
-            .logout();
+                .logout();
     }
 
 }
