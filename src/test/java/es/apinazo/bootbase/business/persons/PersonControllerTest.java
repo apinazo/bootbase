@@ -2,7 +2,6 @@ package es.apinazo.bootbase.business.persons;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -97,7 +96,9 @@ public class PersonControllerTest {
                 .auth()
                     .with(
                         user("user").password("password").roles("ADMIN"),
-                        csrf() // Anything but GET requires MockMvc to be aware of CSRF.
+                        // Anything but GET requires MockMvc to be aware of CSRF configuration
+                        // since MockMvc will add a header with a csrf token.
+                        csrf()
                     )
                 .contentType("application/json")
                 .body(new Person("angel", "pinazo", Gender.MALE)) // Auto converted into JSON.
