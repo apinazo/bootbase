@@ -8,7 +8,9 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,6 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,7 +36,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * </ul>
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(PersonController.class)
+@WebMvcTest(
+    // Hook to this controller services without starting up a web server.
+    value = PersonController.class,
+    // Enable security in test. If not used, Spring Security configuration will be ignored.
+    includeFilters = @ComponentScan.Filter(classes = EnableWebSecurity.class)
+)
 public class PersonControllerTest {
 
     @Autowired
@@ -62,7 +70,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void findPersonById_WhenReturned_ShouldBeMe() throws Exception{
+    public void whenFindPersonById_thenShouldBeMe() throws Exception{
 
         mvc
             .perform(
@@ -71,7 +79,21 @@ public class PersonControllerTest {
                     .with(user("user").password("password").roles("USER"))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.firstName", is("angel")));
+            .andExpect(jsonPath("$.firstName", is("angel")))
+            .andDo(print());
+    }
+
+    @Test
+    public void whenFindPersonById_andNotAuthorizedRole_thenMustDenyAccess() throws Exception{
+
+        mvc
+            .perform(
+                MockMvcRequestBuilders
+                    .get("/people/{id}", 1)
+                    .with(user("user").password("password").roles("INVALID_ROLE"))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError())
+            .andDo(print());
     }
 
     @Test
