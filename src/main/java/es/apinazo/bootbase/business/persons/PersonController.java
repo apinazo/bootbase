@@ -39,19 +39,19 @@ public class PersonController {
         this.personRepository = personRepository;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     @GetMapping
     public List<Person> getAll() {
         return this.personService.getAll();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     @GetMapping(value="/{id}")
     public Person getPersonById(@PathVariable("id") int id) {
         return this.personService.getById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER', 'ROLE_ADMIN)")
+    @PreAuthorize("hasAnyRole('ROLE_USER, ROLE_ADMIN')")
     @GetMapping("/firstName/{firstName}")
     public Person getPersonByFirstName(@PathVariable("firstName") String firstName) {
 

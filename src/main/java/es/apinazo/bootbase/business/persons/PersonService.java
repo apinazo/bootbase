@@ -18,12 +18,8 @@ public class PersonService {
 
     @Autowired
     public PersonService(PersonRepository personRepository) {
-        Assert.notNull(personRepository, "personRepository");
+        Assert.notNull(personRepository, "personRepository must not be null");
         this.personRepository = personRepository;
-    }
-
-    public void doSomeMagic(){
-        log.info("Doing magic !!!");
     }
 
     public Person getById(int id) {
@@ -34,7 +30,11 @@ public class PersonService {
         return personRepository.findByFirstName(name);
     }
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Person create(Person person) {
+        return this.personRepository.save(person);
+    }
+
     public List<Person> getAll() {
         return personRepository.findAll();
     }
