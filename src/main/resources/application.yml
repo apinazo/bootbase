@@ -15,6 +15,8 @@ server:
   compression:
     enabled: true # Enable compression for html, xml, css and plain text.
     min-response-size: 1024 # For files greater or equal to 1024 bytes.
+  servlet:
+    context-path: /api
 
 spring:
 
@@ -31,15 +33,12 @@ spring:
       ddl-auto: update # none, update, create, create-drop.
 
   # Datasource.
+  # Use an embedded DB for default profile.
   datasource:
-    generate-unique-name: true # To avoid tests to reuse the same DB. There will be one DB for each context.
-    url: jdbc:p6spy:mysql://localhost/bootbase
-    username: bootbase
-    password: bootbase
-    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    hikari:
-      test-on-borrow: true # Tests a connection from the pool before using it.
-      validation-query: SELECT 1 # Query used to validate the connection.
+    url: jdbc:h2:file:~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
 # Logging configuration.
 logging:

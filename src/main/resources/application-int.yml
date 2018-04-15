@@ -19,4 +19,11 @@ spring:
       ddl-auto: none
 
   datasource:
-    url: jdbc:mysql://int/bootbase
+    generate-unique-name: true # To avoid tests to reuse the same DB. There will be one DB for each context.
+    url: jdbc:p6spy:mysql://int-host/bootbase
+    username: bootbase
+    password: bootbase
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    hikari:
+      test-on-borrow: true # Tests a connection from the pool before using it.
+      validation-query: SELECT 1 # Query used to validate the connection.
