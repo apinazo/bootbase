@@ -15,8 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(
     // Hook to this controller services without starting up a web server.
     value = PersonController.class,
-    // Enable security in test. If not used, Spring Security configuration will be ignored.
+    // Enable custom security in test. If not, Spring Security will be set upt with BASIC authentication.
     includeFilters = @ComponentScan.Filter(classes = EnableWebSecurity.class)
 )
 public class PersonControllerTest {
@@ -97,7 +96,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void findPersonById_WhenReturned_ShouldBeMe_WithRestAssured() {
+    public void whenFindPersonById_ShouldBeMe_WithRestAssured() {
 
         RestAssuredMockMvc.
             given().
@@ -107,11 +106,12 @@ public class PersonControllerTest {
                 get("/people/{id}", 1).
             then().
                 statusCode(200).
-                body("firstName", equalTo("angel"));
+                body("firstName", equalTo("angel")).
+                time(lessThan(500L));
     }
 
     @Test
-    public void createPerson_WhenReturned_ShouldBeMe_WithRestAssured() {
+    public void whenCreatePerson_ShouldBeMe_WithRestAssured() {
 
         RestAssuredMockMvc
             .given()
