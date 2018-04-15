@@ -96,7 +96,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void whenFindPersonById_ShouldBeMe_WithRestAssured() {
+    public void whenFindPersonById_thenShouldBeMe_WithRestAssured() {
 
         RestAssuredMockMvc.
             given().
@@ -117,7 +117,7 @@ public class PersonControllerTest {
             .given()
                 .auth()
                     .with(
-                        user("user").password("password").roles("ADMIN"),
+                        user("admin").password("password").roles("ADMIN"),
                         // Anything but GET requires MockMvc to be aware of CSRF configuration
                         // since MockMvc will add a header with a csrf token.
                         csrf()
