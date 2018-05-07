@@ -31,6 +31,9 @@ public class PersonApiContractTest {
     @MockBean
     private PersonService personService;
 
+    @MockBean
+    private PersonRepository personRepository;
+
     @Before
     public void setup() {
 
@@ -44,7 +47,7 @@ public class PersonApiContractTest {
     }
 
     @Test
-    public void findAll_MatchSchema() {
+    public void findAll_shouldMatchSchema() {
 
         RestAssuredMockMvc.
             given().
@@ -58,10 +61,12 @@ public class PersonApiContractTest {
     }
 
     @Test
-    public void findById_MatchSchema() {
+    public void findById_shouldMatchSchema() {
 
         RestAssuredMockMvc.
             given().
+                auth().
+                    with(user("user").password("password").roles("USER")).
             when().
                 get("/people/{id}", 1).
             then().
