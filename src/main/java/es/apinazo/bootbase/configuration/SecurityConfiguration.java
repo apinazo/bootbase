@@ -103,9 +103,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // TODO: Replace by auth.authenticationProvider( <? extends DaoAuthenticationProvider> ).
         auth
             .inMemoryAuthentication() // Creates an in-memory AuthenticationProvider.
-                .withUser("admin").password("password").roles("ADMIN")
+                // {noop} is used to avoid instantiation of a PasswordEncoder since the password is in plain text.
+                // Without {noop}, authentication would fail by missing a PasswordEncoder bean.
+                .withUser("admin").password("{noop}password").roles("ADMIN")
             .and()
-                .withUser("user").password("password").roles("USER");
+                .withUser("user").password("{noop}password").roles("USER");
     }
 
 
@@ -125,6 +127,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+            .httpBasic() // To enable HTTP basic auth.
+            .and()
             .csrf()
                 .disable()
             .exceptionHandling()
@@ -132,8 +136,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers("/actuator/**").permitAll() // Actuator is not secured.
-//                    .antMatchers("/**").authenticated() // Any other URI requires an authenticated user.
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/**").authenticated() // Any other URI requires an authenticated user.
+//                    .antMatchers("/**").permitAll()
             .and()
                 .formLogin()
                     .successHandler(authenticationSuccessHandler)
