@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,9 +52,14 @@ public class PersonIntegrationTest {
     @LocalServerPort
     int serverPort;
 
+    // Base path for the context, defined as a property.
+    @Value("${server.servlet.context-path}")
+    String basePath;
+
     // TestRestTemplate is configured to use the prefix
     // http://localhost:${local.server.port} in all requests
     // so it can use relative paths.
+    // Also will automatically use the configured server.servlet.context-path.
     @Autowired
     private TestRestTemplate testRestTemplate;
 
@@ -97,7 +103,9 @@ public class PersonIntegrationTest {
         // Get the response as a raw JSON.
         ResponseEntity<String> response =
             testRestTemplate
-                .getForEntity("/people", String.class, 1);
+                // Use HTTP basic auth as defined in SecurityConfiguration.
+                .withBasicAuth("user", "password")
+                .getForEntity("/people", String.class);
 
         Integer length = JsonPath.read(response.getBody(), "$.length()");
 
@@ -110,8 +118,9 @@ public class PersonIntegrationTest {
 
         // Get the response as a raw JSON.
         ResponseEntity<String> response =
-                testRestTemplate
-                        .getForEntity("/people", String.class, 1);
+            testRestTemplate
+                .withBasicAuth("user", "password")
+                .getForEntity("/people", String.class, 1);
 
         // Parse the raw JSON into objects.
         // Using TypeReference is needed for collections.
@@ -128,6 +137,7 @@ public class PersonIntegrationTest {
 
         ResponseEntity<List<Person>> response2 =
             testRestTemplate
+                .withBasicAuth("user", "password")
                 .exchange(
                     "/people",
                     HttpMethod.GET,
@@ -146,6 +156,7 @@ public class PersonIntegrationTest {
 
         ResponseEntity<Person> responseById =
             testRestTemplate
+                .withBasicAuth("user", "password") // Use HTTP basic auth.
                 .getForEntity("/people/{id}", Person.class, 1);
 
         checkThePersonIsMe(responseById);
@@ -157,6 +168,7 @@ public class PersonIntegrationTest {
 
         ResponseEntity<Person> response =
             testRestTemplate
+                .withBasicAuth("user", "password")
                 .getForEntity("/people/firstName/{firstName}", Person.class, "angel");
 
         checkThePersonIsMe(response);
@@ -169,13 +181,16 @@ public class PersonIntegrationTest {
 
         RestAssured.defaultParser = Parser.JSON; // To parse the response body.
         RestAssured.port = serverPort; // Because we're using a random port.
+        RestAssured.basePath = basePath; // Base path for the context.
 
         given().
-            pathParam("firstName", "angel").
+            // HTTP basic auth without server challenging.
+            auth().preemptive().basic("user", "password").
         when().
-            get("/people/firstName/{firstName}").
+            get("/people/firstName/{name}", "angel").
         then().
-            body("firstName", equalTo("angel"));
+            statusCode(200)
+            .and().body("firstName", equalTo("angel"));
     }
 
 
