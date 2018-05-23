@@ -153,7 +153,14 @@
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
-			<version>3.0.7</version>
+			<version>3.1.0</version>
+			<exclusions>
+				<!-- RestAssured uses and outdated version that conflicts with javax.mail -->
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mailapi</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
