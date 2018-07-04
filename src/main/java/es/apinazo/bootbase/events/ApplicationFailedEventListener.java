@@ -23,5 +23,6 @@ public class ApplicationFailedEventListener implements ApplicationListener<Appli
     @Override
     public void onApplicationEvent(ApplicationFailedEvent applicationFailedEvent) {
         log.info("Events: Catched ApplicationFailedEvent");
+        log.info("Exception was: ", applicationFailedEvent.getException());
     }
 }
