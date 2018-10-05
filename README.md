@@ -5,6 +5,18 @@ Spring Boot base app for projects
 
 Based on Spring Boot 2.0.0.RELEASE.
 
+## Versioning
+
+Althoug I'm a big fan of Gitflow, I'm also fan of using the right tool for each task. This projects follows trunk development, meaning:
+
+* There is no branches but master.
+* master branch is always stable and deployable.
+
+Why did I choose trunk development?
+
+* I'm the only one programmer in this project - so far.
+* Code has plenty of tests and I try to assure it's stable.
+* I trust in myself. :D
 
 ## Package structure
 
